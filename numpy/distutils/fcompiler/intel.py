@@ -24,8 +24,8 @@ class IntelFCompiler(BaseIntelFCompiler):
 
     compiler_type = 'intel'
     compiler_aliases = ('ifort',)
-    description = 'Intel Fortran Compiler for 32-bit apps'
-    version_match = intel_version_match('32-bit|IA-32')
+    description = 'Intel Fortran Compiler for 32/64-bit apps'
+    version_match = intel_version_match('(32-bit|64)|IA-(32|64)')
 
     possible_executables = ['ifort', 'ifc']
 

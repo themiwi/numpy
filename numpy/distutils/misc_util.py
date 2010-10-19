@@ -1540,7 +1540,8 @@ class Configuration(object):
         if not build_info:
             build_info = {}
 
-        install_dir = os.path.join(self.package_path, install_dir)
+        install_dir = os.path.join(os.path.join(*self.name.split('.')),
+                                   install_dir)
         self._add_library(name, sources, install_dir, build_info)
         self.installed_libraries.append(InstallableLib(name, build_info, install_dir))
 

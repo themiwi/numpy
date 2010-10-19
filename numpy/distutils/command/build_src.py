@@ -207,7 +207,7 @@ class build_src(build_ext.build_ext):
         self.data_files[:] = new_data_files
 
 
-    def _build_npy_pkg_config(self, info, gd):
+    def _build_npy_pkg_config(self, info, gd, prefix):
         import shutil
         template, install_dir, subst_dict = info
         template_dir = os.path.dirname(template)
@@ -227,7 +227,7 @@ class build_src(build_ext.build_ext):
         subst_vars(generated_path, template, subst_dict)
 
         # Where to install relatively to install prefix
-        full_install_dir = os.path.join(template_dir, install_dir)
+        full_install_dir = os.path.join(prefix, install_dir)
         return full_install_dir, generated_path
 
     def build_npy_pkg_config(self):
@@ -253,11 +253,11 @@ class build_src(build_ext.build_ext):
 
         if build_npkg:
             for pkg, infos in self.distribution.installed_pkg_config.items():
-                pkg_path = self.distribution.package_dir[pkg]
+                pkg_path = os.path.join(*pkg.split('.'))
                 prefix = os.path.join(os.path.abspath(top_prefix), pkg_path)
                 d = {'prefix': prefix}
                 for info in infos:
-                    install_dir, generated = self._build_npy_pkg_config(info, d)
+                    install_dir, generated = self._build_npy_pkg_config(info, d, prefix)
                     self.distribution.data_files.append((install_dir,
                         [generated]))
 
